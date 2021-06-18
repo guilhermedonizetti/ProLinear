@@ -7,6 +7,8 @@ from pandas import read_csv
 class ProLinear:
 
     def __init__(self):
+        self.popu = [] #Matriz para populacao inicial
+        self.apt = [] #aptidao  dos individuos
         self.Matriz = [] #Matriz com as distan. entre as cidades
         self.RotaIni = [] #Vetor com as cidades que fazem parte da rota
         self.ID_cidades = [] #Vetor com inteiro para ID cada cidade da rota inicial
@@ -28,19 +30,31 @@ class ProLinear:
     #Responsavel pelas funcoes de otimizacao da rota
     def OtimizarRota(self):
         st.write("Otimizar rota.")
-        dados = st.file_uploader("Selecione um arquivo .CSV com os dados de distância:", accept_multiple_files=True, type=["csv"])
+        dados = st.file_uploader("Selecione um arquivo .CSV (separado por vírgula) com os dados de distância:", accept_multiple_files=True, type=["csv"])
         if dados:
             self.Matriz, self.RotaIni = fc.CriarMatriz(dados[0])
             self.ID_cidades = fc.EnumerarCidades(self.RotaIni)
             resul = fc.Avalia(self.ID_cidades, self.Matriz)
             st.write("Rota inicial passa pelas cidades {} e retorna à {}".format(self.RotaIni, self.RotaIni[0]))
             st.info("Custo da rota inicial: {}".format(resul))
-            
-            #Chama os metodos de Algoritmos Geneticos
-            #Gerar populacao inicial
-            popu = gn.Populacao_Inicial(self.ID_cidades, self.TP)
-            st.write("População inicial: ")
-            st.dataframe(popu)
+            #Chama os metodos do algoritmo genetico
+            self.PopuInicial() #gerar a populacao inicial
+            self.AptidaoIndividuos() #calcular a aptidao de cada individuo
+    
+    #Gerar populacao inicial
+    def PopuInicial(self):
+        self.popu = gn.Populacao_Inicial(self.ID_cidades, self.TP)
+        st.write("População inicial: ")
+        st.dataframe(self.popu)
+    
+    #Calcular aptidao de cada individuo
+    def AptidaoIndividuos(self):
+        soma_apt = 0
+        self.apt = gn.Aptidao(self.popu, self.TP, self.Matriz)
+        for i in self.apt:
+            soma_apt+=i
+        st.json(self.apt)
+        st.write("A soma das aptidões é: {}".format(soma_apt))
 
 pro = ProLinear()
 pro.Inicial()
