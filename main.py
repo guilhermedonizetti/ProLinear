@@ -40,6 +40,7 @@ class ProLinear:
             #Chama os metodos do algoritmo genetico
             self.PopuInicial() #gerar a populacao inicial
             self.AptidaoIndividuos() #calcular a aptidao de cada individuo
+            self.GerarDescendentes(self.popu, self.apt, self.TC) #gera os descndentes dos individuos
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -55,6 +56,12 @@ class ProLinear:
             soma_apt+=i
         st.json(self.apt)
         st.write("A soma das aptidões é: {}".format(soma_apt))
+    
+    #Gerar os descendentes da populacao
+    def GerarDescendentes(self, pop, aptid, tc):
+        desc = gn.Cruzamento(pop, aptid, tc)
+        st.write("Descendentes: ")
+        st.dataframe(desc)
 
 pro = ProLinear()
 pro.Inicial()
