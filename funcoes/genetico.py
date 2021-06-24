@@ -83,4 +83,24 @@ def Roleta(aptidao):
         soma = soma + aptidao[p]
         p = p+1
     p = p - 1
-    return p 
+    return p
+
+# METODO DE MUTACAO ENTRE OS MAIS APTOS
+def MutacaoGene(pop,desc,tm):
+    tam1 = len(pop)
+    qm = ceil(tm*tam1)
+
+    tam2 = len(desc)
+
+    for i in range(qm):
+        # escolhe descendente
+        ind = randrange(tam2)
+        aux = []
+        aux = desc[ind]
+        # inverte o primeiro e o ultimo elemento
+        aux_p = aux[0]
+        aux_u = aux[len(aux)-1]
+        aux[0] = aux_u
+        aux[len(aux)-1] = aux_p
+        desc.append(aux)
+    return desc

@@ -8,7 +8,9 @@ class ProLinear:
 
     def __init__(self):
         self.popu = [] #Matriz para populacao inicial
+        self.desc = [] #matriz com os descendentes (resultado do Cruzamento)
         self.apt = [] #aptidao  dos individuos
+        self.apt_desc = [] #aptidao dos ind. retornados da mutacao
         self.Matriz = [] #Matriz com as distan. entre as cidades
         self.RotaIni = [] #Vetor com as cidades que fazem parte da rota
         self.ID_cidades = [] #Vetor com inteiro para ID cada cidade da rota inicial
@@ -40,7 +42,9 @@ class ProLinear:
             #Chama os metodos do algoritmo genetico
             self.PopuInicial() #gerar a populacao inicial
             self.AptidaoIndividuos() #calcular a aptidao de cada individuo
-            self.GerarDescendentes(self.popu, self.apt, self.TC) #gera os descndentes dos individuos
+            self.GerarDescendentes() #gera os descndentes dos individuos
+            self.Mutacao() #faz mutacao entre os descendentes mais aptos
+            self.AptidaoDescendentes() #Aptidao dos individuos retornados da Mutacao
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -58,10 +62,26 @@ class ProLinear:
         st.write("A soma das aptidões é: {}".format(soma_apt))
     
     #Gerar os descendentes da populacao
-    def GerarDescendentes(self, pop, aptid, tc):
-        desc = gn.Cruzamento(pop, aptid, tc)
+    def GerarDescendentes(self):
+        self.desc = gn.Cruzamento(self.popu, self.apt, self.TC)
         st.write("Descendentes: ")
-        st.dataframe(desc)
+        st.dataframe(self.desc)
+    
+    #Faz mutacao entre os descendentes mais aptos
+    def Mutacao(self):
+        self.desc = gn.MutacaoGene(self.popu, self.desc, self.TM)
+        st.write("Resultado da Mutação:")
+        st.dataframe(self.desc)
+    
+    #Aptidao dos individuos retornados da Mutacao
+    def AptidaoDescendentes(self):
+        soma = 0
+        #? tam da popu OU do grupo de descendentes ?
+        self.apt_desc = gn.Aptidao(self.desc, len(self.desc), self.Matriz)
+        for i in self.apt_desc:
+            soma+=i
+        st.json(self.apt_desc)
+        st.write("A soma das aptidões é: {}".format(soma))
 
 pro = ProLinear()
 pro.Inicial()
