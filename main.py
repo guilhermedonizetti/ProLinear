@@ -45,6 +45,7 @@ class ProLinear:
             self.GerarDescendentes() #gera os descndentes dos individuos
             self.Mutacao() #faz mutacao entre os descendentes mais aptos
             self.AptidaoDescendentes() #Aptidao dos individuos retornados da Mutacao
+            self.Ordenar() #coloca em ordem decrescente: apt. popu. inicial de dos descendentes
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -76,12 +77,15 @@ class ProLinear:
     #Aptidao dos individuos retornados da Mutacao
     def AptidaoDescendentes(self):
         soma = 0
-        #? tam da popu OU do grupo de descendentes ?
         self.apt_desc = gn.Aptidao(self.desc, len(self.desc), self.Matriz)
         for i in self.apt_desc:
             soma+=i
         st.json(self.apt_desc)
         st.write("A soma das aptidões é: {}".format(soma))
+    
+    #Coloca em ordem decrescente a apt. da popu inicial e dos desc.
+    def Ordenar(self):
+        self.apt, self.apt_desc, self.popu, self.desc = fc.OrdenarAptidoes(self.apt, self.apt_desc, self.popu, self.desc)
 
 pro = ProLinear()
 pro.Inicial()

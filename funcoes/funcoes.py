@@ -38,3 +38,19 @@ def Avalia(rota, matriz):
     #soma o custo para retornar ao ponto inicial
     custo = custo + matriz[rota[len(rota)-1]][rota[0]]
     return custo
+
+# ORDENAR EM DECRESCENTE AS APTIDOES
+def OrdenarAptidoes(apt, apt_desc, popu, cruza):
+    pop_ini = []
+    desc = []
+    apt_p_ini = apt
+    apt_p_des = apt_desc
+    apt_p_ini.sort(reverse=True)
+    apt_p_des.sort(reverse=True)
+    for i in apt_p_ini:
+        x = apt.index(i)
+        pop_ini.append(popu[x])
+    for i in apt_p_des:
+        x = apt_desc.index(i)
+        desc.append(cruza[x])
+    return apt_p_ini, apt_p_des, pop_ini, desc
