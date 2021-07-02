@@ -8,6 +8,7 @@ class ProLinear:
 
     def __init__(self):
         self.popu = [] #Matriz para populacao inicial
+        self.n_popu = [] #recebe a nova popu. depois da mutacao
         self.desc = [] #matriz com os descendentes (resultado do Cruzamento)
         self.apt = [] #aptidao  dos individuos
         self.apt_desc = [] #aptidao dos ind. retornados da mutacao
@@ -46,6 +47,7 @@ class ProLinear:
             self.Mutacao() #faz mutacao entre os descendentes mais aptos
             self.AptidaoDescendentes() #Aptidao dos individuos retornados da Mutacao
             self.Ordenar() #coloca em ordem decrescente: apt. popu. inicial de dos descendentes
+            self.NovaPopu() #gera os novos individuos da populacao apos a mutacao
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -86,6 +88,12 @@ class ProLinear:
     #Coloca em ordem decrescente a apt. da popu inicial e dos desc.
     def Ordenar(self):
         self.apt, self.apt_desc, self.popu, self.desc = fc.OrdenarAptidoes(self.apt, self.apt_desc, self.popu, self.desc)
+    
+    #Gera os novos individuos da populacao apos a mutacao
+    def NovaPopu(self):
+        self.n_popu = gn.Nova_popu(self.popu, self.desc, self.IG)
+        st.write("Resultado da nova população: ")
+        st.dataframe(self.n_popu)
 
 pro = ProLinear()
 pro.Inicial()

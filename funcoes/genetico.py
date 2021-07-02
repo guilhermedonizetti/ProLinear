@@ -104,3 +104,11 @@ def MutacaoGene(pop,desc,tm):
         aux[len(aux)-1] = aux_p
         desc.append(aux)
     return desc
+
+# Funcao para gerar a nova populacao
+def Nova_popu(pop,desc,ig):
+    tam = len(pop)
+    elite = ceil(ig*tam)
+    for i in range(elite,tam):
+        pop[i] = desc[i-elite]
+    return pop
