@@ -10,7 +10,7 @@
  <br>
  <b>Objetivo: </b>O programa visa receber dados de entrada em .CSV contendo as distâncias entre as cidades, a partir disso testar diversas rotas possíveis através de funções de Algoritmos Genéticos e apontar a melhor rota, considerando como "melhor" a que tiver menor distância para ser percorrida e voltar à cidade inicial.
  <br><br>
- <b>Etapas desenvolvidas:</b> Entrada de dados :arrow_right: Geração da população inicial :arrow_right: Cálculo da aptidão de cada indivíduo :arrow_right: Geração da descendência :arrow_right: Realiza a mutação.
+ <b>Etapas desenvolvidas:</b> Entrada de dados :arrow_right: Geração da população inicial :arrow_right: Cálculo da aptidão de cada indivíduo :arrow_right: Geração da descendência :arrow_right: Realiza a mutação :arrow_right: Gera a nova população após a mutação.
  <br><br>
  <b>Usar: </b> Devido ao status do projeto não é possível a execução completa do programa, mas para testar o que existe por enquanto, é necessário a instalação do <b>Streamlit</b>:
  <code>pip3 install streamlit</code>.
