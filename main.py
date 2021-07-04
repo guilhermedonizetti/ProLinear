@@ -42,12 +42,13 @@ class ProLinear:
             st.info("Custo da rota inicial: {}".format(resul))
             #Chama os metodos do algoritmo genetico
             self.PopuInicial() #gerar a populacao inicial
-            self.AptidaoIndividuos() #calcular a aptidao de cada individuo
+            self.AptidaoIndividuos(self.popu) #calcular a aptidao de cada individuo
             self.GerarDescendentes() #gera os descndentes dos individuos
             self.Mutacao() #faz mutacao entre os descendentes mais aptos
             self.AptidaoDescendentes() #Aptidao dos individuos retornados da Mutacao
             self.Ordenar() #coloca em ordem decrescente: apt. popu. inicial de dos descendentes
             self.NovaPopu() #gera os novos individuos da populacao apos a mutacao
+            self.AptidaoIndividuos(self.n_popu) #calcula a aptidao dos indiv. da nova popu.
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -56,9 +57,9 @@ class ProLinear:
         st.dataframe(self.popu)
     
     #Calcular aptidao de cada individuo
-    def AptidaoIndividuos(self):
+    def AptidaoIndividuos(self, individuos):
         soma_apt = 0
-        self.apt = gn.Aptidao(self.popu, self.TP, self.Matriz)
+        self.apt = gn.Aptidao(individuos, self.TP, self.Matriz)
         for i in self.apt:
             soma_apt+=i
         st.json(self.apt)
