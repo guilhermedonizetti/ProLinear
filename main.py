@@ -43,12 +43,13 @@ class ProLinear:
             #Chama os metodos do algoritmo genetico
             self.PopuInicial() #gerar a populacao inicial
             self.AptidaoIndividuos(self.popu) #calcular a aptidao de cada individuo
-            self.GerarDescendentes() #gera os descndentes dos individuos
+            self.GerarDescendentes() #gera os descendentes dos individuos: Cruzamento
             self.Mutacao() #faz mutacao entre os descendentes mais aptos
             self.AptidaoDescendentes() #Aptidao dos individuos retornados da Mutacao
-            self.Ordenar() #coloca em ordem decrescente: apt. popu. inicial de dos descendentes
+            self.Ordenar() #coloca em ordem decrescente: apt. popu. inicial dos descendentes
             self.NovaPopu() #gera os novos individuos da populacao apos a mutacao
             self.AptidaoIndividuos(self.n_popu) #calcula a aptidao dos indiv. da nova popu.
+            self.OrdenarAtual() #ordena em decrescente: apt_desc e nova popu.
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -94,6 +95,16 @@ class ProLinear:
     def NovaPopu(self):
         self.n_popu = gn.Nova_popu(self.popu, self.desc, self.IG)
         st.write("Resultado da nova população: ")
+        st.dataframe(self.n_popu)
+    
+    #ordena em decrescente: apt_desc e nova popu.
+    def OrdenarAtual(self):
+        st.write("Estrutura de dados antes da ordenação: ")
+        st.json(self.apt)
+        st.json(self.n_popu)
+        self.apt_desc, self.n_popu = fc.Ordenar(self.apt, self.n_popu)
+        st.write("Aptidão e N. População ordenados em decrescentes:")
+        st.json(self.apt)
         st.dataframe(self.n_popu)
 
 pro = ProLinear()

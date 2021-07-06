@@ -54,3 +54,13 @@ def OrdenarAptidoes(apt, apt_desc, popu, cruza):
         x = apt_desc.index(i)
         desc.append(cruza[x])
     return apt_p_ini, apt_p_des, pop_ini, desc
+
+#ORDENAR EM DECRESCENTE A POPULACAO DE ACORDO COM A APTIDAO
+def Ordenar(apt_atual, popu):
+    populacao = []
+    apt = apt_atual
+    apt.sort(reverse=True)
+    for i in apt:
+        x = apt_atual.index(i)
+        populacao.append(popu[x])
+    return apt, populacao
