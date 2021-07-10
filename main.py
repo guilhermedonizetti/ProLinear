@@ -14,6 +14,7 @@ class ProLinear:
         self.apt_desc = [] #aptidao dos ind. retornados da mutacao
         self.Matriz = [] #Matriz com as distan. entre as cidades
         self.RotaIni = [] #Vetor com as cidades que fazem parte da rota
+        self.resul = 0 #valor do custo da rota inicial
         self.ID_cidades = [] #Vetor com inteiro para ID cada cidade da rota inicial
         self.TP = 20 #tam da populacao
         self.NG = 50 #numero de geracoes
@@ -37,9 +38,9 @@ class ProLinear:
         if dados:
             self.Matriz, self.RotaIni = fc.CriarMatriz(dados[0])
             self.ID_cidades = fc.EnumerarCidades(self.RotaIni)
-            resul = fc.Avalia(self.ID_cidades, self.Matriz)
+            self.resul = fc.Avalia(self.ID_cidades, self.Matriz)
             st.write("Rota inicial passa pelas cidades {} e retorna à {}".format(self.RotaIni, self.RotaIni[0]))
-            st.info("Custo da rota inicial: {}".format(resul))
+            st.info("Custo da rota inicial: {}".format(self.resul))
             #Chama os metodos do algoritmo genetico
             self.PopuInicial() #gerar a populacao inicial
             self.AptidaoIndividuos(self.popu) #calcular a aptidao de cada individuo
@@ -50,6 +51,7 @@ class ProLinear:
             self.NovaPopu() #gera os novos individuos da populacao apos a mutacao
             self.AptidaoIndividuos(self.n_popu) #calcula a aptidao dos indiv. da nova popu.
             self.OrdenarAtual() #ordena em decrescente: apt_desc e nova popu.
+            self.NovaRota() #retornar a nova rota, melhor que a inicial
     
     #Gerar populacao inicial
     def PopuInicial(self):
@@ -106,6 +108,18 @@ class ProLinear:
         st.write("Aptidão e N. População ordenados em decrescentes:")
         st.json(self.apt)
         st.dataframe(self.n_popu)
+    
+    #retornar nova rota, melhor que a atual
+    def NovaRota(self):
+        cid_rota = []
+        rota_n = self.n_popu[len(self.popu)-1]
+        novo_custo = fc.Avalia(rota_n, self.Matriz)
+        st.success("Concluído!")
+        for i in rota_n:
+            cid_rota.append(self.RotaIni[i])
+        st.write("A nova rota é: {}.".format(cid_rota))
+        st.write("O custo da nova rota é: {}.".format(novo_custo))
+        st.write("Rota antiga: {}\nCusto: {}".format(self.RotaIni, self.resul))
 
 pro = ProLinear()
 pro.Inicial()
