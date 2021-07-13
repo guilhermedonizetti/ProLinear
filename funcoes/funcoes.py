@@ -64,3 +64,14 @@ def Ordenar(apt_atual, popu):
         x = apt_atual.index(i)
         populacao.append(popu[x])
     return apt, populacao
+
+
+#ORDENAR EM CRESCENTE OS "OTIMOS"
+def OrdenarResultado(rota, custo):
+    rota_x = []
+    cus = sorted(set(custo))
+    cus.sort()
+    for i in cus:
+        x = custo.index(i)
+        rota_x.append(rota[x])
+    return rota_x, cus
