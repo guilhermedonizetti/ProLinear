@@ -2,6 +2,7 @@ import streamlit as st
 #metodos internos
 import funcoes.funcoes as fc
 import funcoes.genetico as gn
+import funcoes.documentar as dc
 from pandas import read_csv
 
 class ProLinear:
@@ -41,8 +42,8 @@ class ProLinear:
             self.Matriz, self.RotaIni = fc.CriarMatriz(dados[0])
             self.ID_cidades = fc.EnumerarCidades(self.RotaIni)
             self.resul = fc.Avalia(self.ID_cidades, self.Matriz)
-            st.write("Rota inicial passa pelas cidades {} e retorna à {}".format(self.RotaIni, self.RotaIni[0]))
-            st.info("Custo da rota inicial: {}".format(self.resul))
+            #st.write("Rota inicial passa pelas cidades {} e retorna à {}".format(self.RotaIni, self.RotaIni[0]))
+            #st.info("Custo da rota inicial: {}".format(self.resul))
 
     #Responsavel pelas funcoes de otimizacao da rota
     def OtimizarRota(self, tp, ng, tc, tm, ig):
@@ -121,9 +122,14 @@ class ProLinear:
         rota, custo = fc.OrdenarResultado(rota, custo)
         for i in rota[0]:
             cid_rota.append(self.RotaIni[i])
-        st.write("A nova rota é: {} e retorna para {}.".format(cid_rota, cid_rota[0]))
-        st.write("O custo da nova rota é: {}.".format(custo[0]))
-        st.write("Rota antiga: {}\nCusto: {}".format(self.RotaIni, self.resul))
+        st.success("Abaixo a nova rota:")
+        st.dataframe(cid_rota)
+        st.write("Após a última cidade, retorne para {}.".format(cid_rota[0]))
+        st.info("Custo: {}.".format(custo[0]))
+        botao = st.button("Salvar")
+        if botao==True:
+            dc.GerarPDF()
+        #download: http://awesome-streamlit.org/
 
 pro = ProLinear()
 pro.Inicial()
