@@ -2,8 +2,7 @@ from fpdf import FPDF
 from datetime import date
 
 #Metodo para gerar PDF
-def GerarPDF():
-    cidades = ["Queluz SP", "Cruzeiro SP", "Lorena SP", "São Lourenço MG", "Resende RJ"]
+def GerarPDF(rota):
     pdf = FPDF()
   
     # Adding a page
@@ -18,10 +17,10 @@ def GerarPDF():
     
     # add another
     cont = 0
-    for x in cidades:
+    for x in rota:
         cont += 1
         pdf.cell(200, 10, txt="{}º cidade: {}".format(cont, x),ln=6, align='L')
-    pdf.cell(200, 10, txt="Retorna para: {}".format(cidades[0]),ln=6, align='L')
+    pdf.cell(200, 10, txt="Retorna para: {}".format(rota[0]),ln=6, align='L')
     
     # save the pdf
     pdf.output("ProLinear.pdf")

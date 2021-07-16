@@ -1,9 +1,12 @@
-import streamlit as st
 #metodos internos
 import funcoes.funcoes as fc
 import funcoes.genetico as gn
+import funcoes.subida_encosta as sb
 import funcoes.documentar as dc
 from pandas import read_csv
+import webbrowser
+#
+import streamlit as st
 
 class ProLinear:
 
@@ -118,17 +121,22 @@ class ProLinear:
                         for i5 in range(len(self.IG)):
                             r, c = self.OtimizarRota(self.TP[i1],self.NG[i2],self.TC[i3],self.TM[i4],self.IG[i5])
                             rota.append(r)
-                            custo.append(c)
+                            custo.append(c) 
         rota, custo = fc.OrdenarResultado(rota, custo)
         for i in rota[0]:
             cid_rota.append(self.RotaIni[i])
-        st.success("Abaixo a nova rota:")
         st.dataframe(cid_rota)
         st.write("Após a última cidade, retorne para {}.".format(cid_rota[0]))
         st.info("Custo: {}.".format(custo[0]))
+        try:
+            rota_sub_enc, custo_sub_enc = sb.Subida_Enc_Alt(self.ID_cidades, self.Matriz, self.resul)
+            st.write("Para Subida de Encosta Alterada, a melhor rota é {}, com custo de {}.".format(rota_sub_enc, custo_sub_enc))
+        except:
+            st.error("Não fez subida de Encosta.")
         botao = st.button("Salvar")
         if botao==True:
-            dc.GerarPDF()
+            dc.GerarPDF(cid_rota)
+            webbrowser.open("ProLinear.pdf")
         #download: http://awesome-streamlit.org/
 
 pro = ProLinear()
