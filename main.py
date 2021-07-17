@@ -3,7 +3,8 @@ import funcoes.funcoes as fc
 import funcoes.genetico as gn
 import funcoes.subida_encosta as sb
 import funcoes.documentar as dc
-from pandas import read_csv
+import funcoes.graficos as gf
+from pandas import read_csv, DataFrame
 import webbrowser
 #
 import streamlit as st
@@ -123,21 +124,22 @@ class ProLinear:
                             rota.append(r)
                             custo.append(c) 
         rota, custo = fc.OrdenarResultado(rota, custo)
-        for i in rota[0]:
-            cid_rota.append(self.RotaIni[i])
-        st.dataframe(cid_rota)
-        st.write("Após a última cidade, retorne para {}.".format(cid_rota[0]))
-        st.info("Custo: {}.".format(custo[0]))
         try:
             rota_sub_enc, custo_sub_enc = sb.Subida_Enc_Alt(self.ID_cidades, self.Matriz, self.resul)
-            st.write("Para Subida de Encosta Alterada, a melhor rota é {}, com custo de {}.".format(rota_sub_enc, custo_sub_enc))
+            if custo[0]<=custo_sub_enc:
+                for i in rota[0]:
+                    cid_rota.append(self.RotaIni[i])
+                custo = custo[0]
+            else:
+                for i in rota_sub_enc:
+                    cid_rota.append(self.RotaIni[i])
+                custo = custo_sub_enc
+            fc.MostraResultado(cid_rota, custo)
         except:
             st.error("Não fez subida de Encosta.")
-        botao = st.button("Salvar")
-        if botao==True:
-            dc.GerarPDF(cid_rota)
-            webbrowser.open("ProLinear.pdf")
-        #download: http://awesome-streamlit.org/
+        gf.CompararCustos(custo, self.resul)
+        dc.GerarPDF(cid_rota)
+        webbrowser.open("ProLinear.pdf")
 
 pro = ProLinear()
 pro.Inicial()

@@ -1,4 +1,5 @@
 from pandas import read_csv
+from streamlit import dataframe, info, write
 
 #Obtem os pontos (as cidades) que fazem parte da rota
 def CidadesRota(dados):
@@ -75,3 +76,9 @@ def OrdenarResultado(rota, custo):
         x = custo.index(i)
         rota_x.append(rota[x])
     return rota_x, cus
+
+#EXIBIR RESULTADO
+def MostraResultado(rota, custo):
+    dataframe(rota)
+    write("Após a última cidade, retorne para {}.".format(rota[0]))
+    info("Custo: {}".format(custo))
