@@ -112,9 +112,10 @@ class ProLinear:
         self.n_custo = fc.Avalia(self.n_rota, self.Matriz)
     
     def Persistencia(self):
-        cid_rota = []
-        rota = []
-        custo = []
+        cid_rota = [] #vetor das rotas
+        rota = [] #vetor para receber a rotafinal
+        custo = [] #vetor de custos das rotas
+        #testa diferentes parametros geneticos
         for i1 in range(len(self.TP)):
             for i2 in range (len(self.NG)):
                 for i3 in range(len(self.TC)):
@@ -122,24 +123,29 @@ class ProLinear:
                         for i5 in range(len(self.IG)):
                             r, c = self.OtimizarRota(self.TP[i1],self.NG[i2],self.TC[i3],self.TM[i4],self.IG[i5])
                             rota.append(r)
-                            custo.append(c) 
-        rota, custo = fc.OrdenarResultado(rota, custo)
+                            custo.append(c)
+        rota, custo = fc.OrdenarResultado(rota, custo) #reordenado a rota com base no custo
+        dist = custo #recebe os custos
         try:
+            #realiza a Subida de Encosta Alterada
             rota_sub_enc, custo_sub_enc = sb.Subida_Enc_Alt(self.ID_cidades, self.Matriz, self.resul)
+            #se os algoritmos forem melhores ou iguais...
             if custo[0]<=custo_sub_enc:
                 for i in rota[0]:
                     cid_rota.append(self.RotaIni[i])
                 custo = custo[0]
+            #se a subida de encosta encontrar resultado melhor...
             else:
                 for i in rota_sub_enc:
                     cid_rota.append(self.RotaIni[i])
                 custo = custo_sub_enc
             fc.MostraResultado(cid_rota, custo)
+            gf.Custos(dist)
+            gf.CompararCustos(custo, self.resul)
+            dc.GerarPDF(cid_rota)
+            webbrowser.open("ProLinear.pdf")
         except:
-            st.error("Não fez subida de Encosta.")
-        gf.CompararCustos(custo, self.resul)
-        dc.GerarPDF(cid_rota)
-        webbrowser.open("ProLinear.pdf")
+            st.error("Não fez subida de Encosta nem gerou gráficos.")
 
 pro = ProLinear()
 pro.Inicial()
