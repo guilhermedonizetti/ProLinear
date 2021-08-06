@@ -1,13 +1,15 @@
-#metodos internos
+#Import principal
+import streamlit as st
+#Import relacionado
+from pandas import read_csv, DataFrame
+import webbrowser
+#Import metodos internos
 import funcoes.funcoes as fc
 import funcoes.genetico as gn
 import funcoes.subida_encosta as sb
 import funcoes.documentar as dc
 import funcoes.graficos as gf
-from pandas import read_csv, DataFrame
-import webbrowser
-#
-import streamlit as st
+
 
 class ProLinear:
 
