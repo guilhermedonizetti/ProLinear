@@ -46,8 +46,6 @@ class ProLinear:
             self.Matriz, self.RotaIni = fc.CriarMatriz(dados[0])
             self.ID_cidades = fc.EnumerarCidades(self.RotaIni)
             self.resul = fc.Avalia(self.ID_cidades, self.Matriz)
-            #st.write("Rota inicial passa pelas cidades {} e retorna à {}".format(self.RotaIni, self.RotaIni[0]))
-            #st.info("Custo da rota inicial: {}".format(self.resul))
 
     #Responsavel pelas funcoes de otimizacao da rota
     def OtimizarRota(self, tp, ng, tc, tm, ig):
@@ -126,6 +124,7 @@ class ProLinear:
                             custo.append(c)
         rota, custo = fc.OrdenarResultado(rota, custo) #reordenado a rota com base no custo
         dist = custo #recebe os custos
+        
         try:
             #realiza a Subida de Encosta Alterada
             rota_sub_enc, custo_sub_enc = sb.Subida_Enc_Alt(self.ID_cidades, self.Matriz, self.resul)
@@ -144,6 +143,7 @@ class ProLinear:
             gf.CompararCustos(custo, self.resul)
             dc.GerarPDF(cid_rota)
             webbrowser.open("ProLinear.pdf")
+        
         except:
             st.error("Não fez subida de Encosta nem gerou gráficos.")
 
